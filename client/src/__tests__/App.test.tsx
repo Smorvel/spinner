@@ -17,9 +17,9 @@ describe('Spin Wheel App', () => {
     expect(screen.getByText('Пункты колеса:')).toBeInTheDocument();
 
     // Check for canvas element (spin wheel)
-    const canvas = screen.getByRole('img', { hidden: true });
+    const canvas = document.querySelector('canvas');
     expect(canvas).toBeInTheDocument();
-    expect(canvas.tagName).toBe('CANVAS');
+    expect(canvas?.tagName).toBe('CANVAS');
   });
 
   it('renders the textarea with default items', () => {
