@@ -19,7 +19,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ items }) => {
   const [lastMouseAngle, setLastMouseAngle] = useState(0);
   const [winner, setWinner] = useState<string | null>(null);
 
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const wheelRadius = 200;
   const centerX = wheelRadius + 50;
   const centerY = wheelRadius + 50;
