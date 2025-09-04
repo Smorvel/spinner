@@ -1,66 +1,71 @@
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 
-// Define types
-type ApiResponse = {
-  message: string;
-};
+describe('Spin Wheel App', () => {
+  it('renders the spin wheel app correctly', () => {
+    render(<App />);
 
-// Mock the fetch API
-globalThis.fetch = vi.fn() as unknown as typeof fetch;
+    // Check for main title
+    expect(screen.getByText('Колесо Фортуны')).toBeInTheDocument();
 
-function mockFetchResponse(data: ApiResponse) {
-  return {
-    json: vi.fn().mockResolvedValue(data),
-    ok: true,
-  };
-}
+    // Check for settings panel
+    expect(screen.getByText('Настройки')).toBeInTheDocument();
 
-describe('App Component', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    // Default mock implementation
-    (globalThis.fetch as unknown as Mock).mockResolvedValue(
-      mockFetchResponse({ message: 'Test Message from API' })
-    );
+    // Check for input label
+    expect(screen.getByText('Пункты колеса:')).toBeInTheDocument();
+
+    // Check for canvas element (spin wheel)
+    const canvas = screen.getByRole('img', { hidden: true });
+    expect(canvas).toBeInTheDocument();
+    expect(canvas.tagName).toBe('CANVAS');
   });
 
-  it('renders App component correctly', () => {
+  it('renders the textarea with default items', () => {
     render(<App />);
-    expect(screen.getByText('Mentat Template JS')).toBeInTheDocument();
-    expect(screen.getByText(/Frontend: React, Vite/)).toBeInTheDocument();
-    expect(screen.getByText(/Backend: Node.js, Express/)).toBeInTheDocument();
+
+    const textarea = screen.getByRole('textbox');
+    expect(textarea).toBeInTheDocument();
+    expect(textarea).toHaveValue('Пункт 1\nПункт 2\nПункт 3\nПункт 4');
+  });
+
+  it('renders instructions correctly', () => {
+    render(<App />);
+
+    expect(screen.getByText('Инструкция:')).toBeInTheDocument();
+    expect(screen.getByText('Каждая строка = новый пункт')).toBeInTheDocument();
     expect(
-      screen.getByText(/Utilities: Typescript, ESLint, Prettier/)
+      screen.getByText('Добавьте % для веса: "Пункт1 30%"')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Вращайте мышью или кнопкой в центре')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Сила вращения зависит от движения мыши')
     ).toBeInTheDocument();
   });
 
-  it('loads and displays API message', async () => {
+  it('allows user to update wheel items', async () => {
+    const user = userEvent.setup();
     render(<App />);
 
-    // Should initially show loading message
-    expect(screen.getByText(/Loading message from server/)).toBeInTheDocument();
+    const textarea = screen.getByRole('textbox');
 
-    // Wait for the fetch to resolve and check if the message is displayed
-    await waitFor(() => {
-      expect(screen.getByText('Test Message from API')).toBeInTheDocument();
-    });
+    // Clear and type new content
+    await user.clear(textarea);
+    await user.type(textarea, 'Приз 1 50%\nПриз 2 30%\nПриз 3 20%');
 
-    expect(globalThis.fetch).toHaveBeenCalledWith('/api');
+    expect(textarea).toHaveValue('Приз 1 50%\nПриз 2 30%\nПриз 3 20%');
   });
 
-  it('handles API error', async () => {
-    // Mock a failed API call
-    (globalThis.fetch as unknown as Mock).mockRejectedValue(
-      new Error('API Error')
-    );
-
+  it('has proper dark theme styling', () => {
     render(<App />);
 
-    // Wait for the error message to appear
-    await waitFor(() => {
-      expect(screen.getByText(/Error: API Error/)).toBeInTheDocument();
+    const mainContainer = screen.getByText('Колесо Фортуны').closest('div');
+    expect(mainContainer?.parentElement?.parentElement).toHaveStyle({
+      backgroundColor: '#1a1a1a',
+      color: '#ffffff',
     });
   });
 });
