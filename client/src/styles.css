@@ -6,26 +6,48 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #f0f0f0;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
 h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #1f2937;
+  color: #ffffff;
   text-align: center;
 }
 
 .paper {
-  background-color: white;
+  background-color: #2d2d2d;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
   padding: 32px;
   width: 100%;
+  border: 1px solid #444;
 }
 
 .section {
-  background-color: #f8fafc;
+  background-color: #1a1a1a;
   border-radius: 8px;
   padding: 16px;
+  border: 1px solid #444;
+}
+
+/* Стили для скроллбара */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4ecdc4;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #45b7d1;
 }
