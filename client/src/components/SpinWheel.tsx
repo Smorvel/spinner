@@ -57,7 +57,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ items }) => {
       0
     );
 
-    items.forEach((item, index) => {
+    items.forEach((item) => {
       const sliceAngle = (item.percentage / totalPercentage) * 2 * Math.PI;
 
       // Рисуем сектор

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import SpinWheel from './components/SpinWheel';
 
 interface WheelItem {
@@ -18,20 +18,23 @@ function App() {
     'Пункт 1\nПункт 2\nПункт 3\nПункт 4'
   );
 
-  const colors = [
-    '#FF6B6B',
-    '#4ECDC4',
-    '#45B7D1',
-    '#96CEB4',
-    '#FECA57',
-    '#FF9FF3',
-    '#54A0FF',
-    '#5F27CD',
-    '#00D2D3',
-    '#FF9F43',
-    '#10AC84',
-    '#EE5A24',
-  ];
+  const colors = useMemo(
+    () => [
+      '#FF6B6B',
+      '#4ECDC4',
+      '#45B7D1',
+      '#96CEB4',
+      '#FECA57',
+      '#FF9FF3',
+      '#54A0FF',
+      '#5F27CD',
+      '#00D2D3',
+      '#FF9F43',
+      '#10AC84',
+      '#EE5A24',
+    ],
+    []
+  );
 
   const parseItems = useCallback(
     (text: string): WheelItem[] => {
